@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>四重溪優生美地 (V3 森林版)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+    :root { --primary: #2E7D32; --accent: #66BB6A; --bg: #F1F8E9; --text: #1B5E20; --card: #FFFFFF; }
+    body { margin: 0; padding: 0; font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; }
+    h1, h2, h3 { font-family: 'Noto Sans TC', serif; margin: 0; }
+    a { text-decoration: none; color: inherit; }
+    header { height: 90vh; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; padding: 20px; }
+    header h1 { font-size: 3rem; margin-bottom: 10px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+    .hero-btn { margin-top: 30px; padding: 12px 30px; background: var(--accent); color: white; border-radius: 50px; font-weight: bold; transition: 0.3s; }
+    .section { padding: 60px 20px; max-width: 1000px; margin: 0 auto; }
+    .section-title { text-align: center; font-size: 2rem; color: var(--primary); margin-bottom: 40px; position: relative; }
+    .room-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .room-card { background: var(--card); border-radius: 30px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+    .room-img { height: 200px; background: #eee; background-size: cover; background-position: center; }
+    .room-info { padding: 20px; }
+    .room-title { font-size: 1.3rem; margin-bottom: 5px; color: var(--primary); }
+    .room-price { color: var(--accent); font-weight: bold; font-size: 1.1rem; }
+    .fab-container { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 100; }
+    .fab { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 1.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); background: var(--accent); }
+    footer { background: #1B5E20; color: #BCAAA4; text-align: center; padding: 40px 20px; margin-top: 60px; }
+    .nav-back { position: fixed; top: 20px; left: 20px; background: rgba(0,0,0,0.5); color: white; padding: 10px 20px; border-radius: 20px; z-index: 1000; }
+</style>
+</head>
+<body>
+<a href="index.html" class="nav-back">← 回版本選單</a>
+<header>
+    <h1>優生美地 USMD</h1>
+    <p>爸爸的一磚一瓦，築起四重溪畔的溫暖家園</p>
+    <a href="#booking" class="hero-btn">立即預約假期</a>
+</header>
+<section class="section">
+    <div class="section-title">關於我們</div>
+    <p style="text-align:center;">每一片磚瓦、每一株植物都有故事。簡單卻貼心的設計，清爽大方，質地純厚。</p>
+</section>
+<section class="section" id="booking">
+    <div class="section-title">精選房型</div>
+    <div class="room-grid">
+        <div class="room-card">
+            <div class="room-img" style="background-image: url('https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');"></div>
+            <div class="room-info"><div class="room-title">日出雙人房</div><div class="room-price">$3,800起</div></div>
+        </div>
+        <div class="room-card">
+            <div class="room-img" style="background-image: url('https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');"></div>
+            <div class="room-info"><div class="room-title">繁星雙人房</div><div class="room-price">$3,400起</div></div>
+        </div>
+        <div class="room-card">
+            <div class="room-img" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');"></div>
+            <div class="room-info"><div class="room-title">水月六人房</div><div class="room-price">$5,400起</div></div>
+        </div>
+    </div>
+</section>
+<footer><p>© 2026 USMD Resort</p></footer>
+</body>
+</html>
