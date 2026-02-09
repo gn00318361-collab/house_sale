@@ -3,55 +3,379 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>USMD 官網改版提案</title>
+<title>USMD 優生美地 - 溫泉農場大亨</title>
 <style>
-    body { font-family: "Microsoft JhengHei", sans-serif; background: #eee; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-    h1 { color: #333; margin-bottom: 30px; }
-    .menu { display: grid; gap: 20px; width: 90%; max-width: 400px; }
-    .btn { display: block; padding: 20px; background: white; border-radius: 15px; text-decoration: none; color: #333; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: 0.3s; display: flex; align-items: center; }
-    .btn:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
-    .icon { font-size: 2rem; margin-right: 15px; }
-    .tag { font-size: 0.8rem; background: #eee; padding: 2px 8px; border-radius: 10px; margin-left: auto; color: #666; }
+    body {
+        font-family: "Microsoft JhengHei", sans-serif;
+        background: linear-gradient(180deg, #81d4fa 0%, #a5d6a7 50%); /* Sky to Grass */
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        user-select: none;
+    }
     
-    .v1 { border-left: 5px solid #FF7043; }
-    .v2 { border-left: 5px solid #D4AF37; background: #222; color: #D4AF37; }
-    .v3 { border-left: 5px solid #2E7D32; }
-    .game { border-left: 5px solid #2196F3; }
+    #ui-layer {
+        position: absolute;
+        top: 0; left: 0; width: 100%;
+        padding: 15px;
+        box-sizing: border-box;
+        pointer-events: none;
+        display: flex;
+        justify-content: space-between;
+        z-index: 10;
+    }
+    
+    .stat-box {
+        background: rgba(255,255,255,0.95);
+        padding: 8px 15px;
+        border-radius: 20px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        font-weight: bold;
+        font-size: 1.1rem;
+        pointer-events: auto;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 2px solid #fff;
+    }
+    
+    #game-area {
+        position: absolute;
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 600px;
+        height: calc(100% - 180px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-y: auto;
+        padding-bottom: 20px;
+    }
+    
+    .section-title {
+        color: #01579b;
+        background: rgba(255,255,255,0.8);
+        padding: 5px 15px;
+        border-radius: 15px;
+        margin: 20px 0 10px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    /* Hot Spring Area */
+    .spring-grid {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .pool {
+        width: 120px;
+        height: 100px;
+        background: #b3e5fc;
+        border: 4px solid #795548; /* Wood border */
+        border-radius: 15px;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        transition: transform 0.1s;
+        overflow: hidden;
+    }
+    .pool:active { transform: scale(0.95); }
+    
+    .water-effect {
+        position: absolute;
+        bottom: 0; left: 0; width: 100%;
+        height: 80%;
+        background: rgba(3, 169, 244, 0.6);
+        animation: wave 3s infinite ease-in-out;
+    }
+    @keyframes wave { 0%, 100% { height: 80%; } 50% { height: 85%; } }
+    
+    .steam {
+        position: absolute;
+        top: 10px; left: 50%;
+        font-size: 1.5rem;
+        animation: steam 2s infinite;
+        opacity: 0;
+    }
+    @keyframes steam { 0% { transform: translateY(0); opacity: 0.5; } 100% { transform: translateY(-20px); opacity: 0; } }
+
+    /* Farm Area */
+    .farm-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        background: #795548;
+        padding: 10px;
+        border-radius: 15px;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    }
+    
+    .plot {
+        width: 70px;
+        height: 70px;
+        background: #5d4037;
+        border-radius: 8px;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2rem;
+        border: 2px solid #4e342e;
+    }
+    
+    /* Progress Bar */
+    .progress-bar {
+        position: absolute;
+        bottom: 5px;
+        left: 5px;
+        width: calc(100% - 10px);
+        height: 4px;
+        background: rgba(0,0,0,0.5);
+        border-radius: 2px;
+    }
+    .progress-fill {
+        height: 100%; width: 0%;
+        background: #76ff03;
+        border-radius: 2px;
+    }
+
+    /* Controls */
+    #controls {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 100px;
+        background: white;
+        padding: 10px;
+        box-sizing: border-box;
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 20;
+    }
+    
+    .btn {
+        background: #ff9800;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 12px;
+        color: white;
+        font-weight: bold;
+        font-size: 0.9rem;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 80px;
+    }
+    .btn:active { transform: translateY(2px); }
+    .btn:disabled { background: #e0e0e0; color: #999; cursor: not-allowed; }
+    .btn span { font-size: 0.75rem; opacity: 0.9; margin-top: 2px; }
+
+    /* Float Text */
+    .float-text {
+        position: absolute;
+        color: #ffeb3b;
+        font-weight: 900;
+        font-size: 1.5rem;
+        pointer-events: none;
+        animation: floatUp 0.8s ease-out forwards;
+        text-shadow: 2px 2px 0 #000;
+        z-index: 100;
+    }
+    @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-50px) scale(1.5); opacity: 0; } }
 </style>
 </head>
 <body>
-    <h1>USMD 官網提案</h1>
-    <div class="menu">
-        <a href="v1.html" class="btn v1">
-            <span class="icon">🏡</span>
-            <div>
-                <div>溫馨質感風 (V1)</div>
-                <div style="font-size:0.9rem; font-weight:normal; margin-top:5px;">木質調、家庭感</div>
-            </div>
-            <span class="tag">推薦</span>
-        </a>
-        <a href="v2.html" class="btn v2">
-            <span class="icon">💎</span>
-            <div>
-                <div>奢華渡假風 (V2)</div>
-                <div style="font-size:0.9rem; font-weight:normal; margin-top:5px;">深色底、高級感</div>
-            </div>
-        </a>
-        <a href="v3.html" class="btn v3">
-            <span class="icon">🌿</span>
-            <div>
-                <div>清新森林風 (V3)</div>
-                <div style="font-size:0.9rem; font-weight:normal; margin-top:5px;">綠意、放鬆</div>
-            </div>
-        </a>
-        <a href="game.html" class="btn game">
-            <span class="icon">🎮</span>
-            <div>
-                <div>溫泉農場大亨</div>
-                <div style="font-size:0.9rem; font-weight:normal; margin-top:5px;">互動小遊戲</div>
-            </div>
-            <span class="tag">彩蛋</span>
-        </a>
+
+    <div id="ui-layer">
+        <div class="stat-box" style="color:#d84315;">💰 <span id="money">100</span></div>
+        <div class="stat-box" style="color:#2e7d32;">🧅 <span id="onion">0</span></div>
     </div>
+
+    <div id="game-area">
+        <div class="section-title">♨️ 四重溪美人湯</div>
+        <div class="spring-grid" id="spring-grid">
+            <div class="pool" onclick="collectSpa(this)">
+                <div class="water-effect"></div>
+                <div class="steam">♨️</div>
+                <span style="position:relative; z-index:2;">🧖</span>
+            </div>
+        </div>
+
+        <div class="section-title">🌱 優生美地農場</div>
+        <div class="farm-grid" id="farm-grid">
+            <!-- Plots -->
+        </div>
+    </div>
+
+    <div id="controls">
+        <button class="btn" onclick="buyPlot()" id="btn-buy-plot">
+            開墾農地
+            <span>💰 200</span>
+        </button>
+        <button class="btn" onclick="buyPool()" id="btn-buy-pool">
+            擴建湯屋
+            <span>💰 500</span>
+        </button>
+        <button class="btn" onclick="sellOnion()" style="background:#43a047;">
+            販售洋蔥
+            <span>賣出所有</span>
+        </button>
+    </div>
+
+<script>
+    // Game State
+    let state = {
+        money: 100,
+        onion: 0,
+        plots: 3,
+        pools: 1,
+        plants: [0, 0, 0] // Progress
+    };
+
+    // DOM
+    const els = {
+        money: document.getElementById('money'),
+        onion: document.getElementById('onion'),
+        farmGrid: document.getElementById('farm-grid'),
+        springGrid: document.getElementById('spring-grid'),
+        btnBuyPlot: document.getElementById('btn-buy-plot'),
+        btnBuyPool: document.getElementById('btn-buy-pool')
+    };
+
+    // Init Farm
+    function renderFarm() {
+        els.farmGrid.innerHTML = '';
+        state.plants.forEach((progress, index) => {
+            const plot = document.createElement('div');
+            plot.className = 'plot';
+            
+            let icon = progress >= 100 ? '🧅' : (progress > 50 ? '🌿' : '🌱');
+            
+            plot.innerHTML = `
+                ${icon}
+                <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
+            `;
+            plot.onclick = () => harvest(index, plot);
+            els.farmGrid.appendChild(plot);
+        });
+    }
+
+    // Init Pools
+    function renderPools() {
+        els.springGrid.innerHTML = '';
+        for(let i=0; i<state.pools; i++) {
+            const pool = document.createElement('div');
+            pool.className = 'pool';
+            pool.innerHTML = `
+                <div class="water-effect"></div>
+                <div class="steam">♨️</div>
+                <span style="position:relative; z-index:2;">🧖</span>
+            `;
+            pool.onclick = () => collectSpa(pool);
+            els.springGrid.appendChild(pool);
+        }
+    }
+
+    // Loop
+    setInterval(() => {
+        let changed = false;
+        state.plants = state.plants.map(p => {
+            if (p < 100) {
+                changed = true;
+                return Math.min(100, p + 0.8); // Growth speed
+            }
+            return p;
+        });
+        if (changed) renderFarm();
+        updateUI();
+    }, 100);
+
+    // Logic
+    function harvest(index, el) {
+        if (state.plants[index] >= 100) {
+            state.plants[index] = 0;
+            state.onion++;
+            showFloatText(el, "+1 🧅");
+            renderFarm();
+        }
+    }
+
+    function collectSpa(el) {
+        state.money += 10;
+        showFloatText(el, "+$10");
+        updateUI();
+    }
+
+    function sellOnion() {
+        if (state.onion > 0) {
+            const earn = state.onion * 15; // Onion price
+            state.money += earn;
+            showFloatText(document.body, `+$${earn}`, 0, -100);
+            state.onion = 0;
+            updateUI();
+        }
+    }
+
+    function buyPlot() {
+        if (state.money >= 200) {
+            state.money -= 200;
+            state.plots++;
+            state.plants.push(0);
+            renderFarm();
+            updateUI();
+        }
+    }
+
+    function buyPool() {
+        if (state.money >= 500) {
+            state.money -= 500;
+            state.pools++;
+            renderPools();
+            updateUI();
+        }
+    }
+
+    function updateUI() {
+        els.money.innerText = Math.floor(state.money);
+        els.onion.innerText = state.onion;
+        els.btnBuyPlot.disabled = state.money < 200;
+        els.btnBuyPool.disabled = state.money < 500;
+    }
+
+    function showFloatText(target, text, xOff=0, yOff=0) {
+        const el = document.createElement('div');
+        el.className = 'float-text';
+        el.innerText = text;
+        const rect = target.getBoundingClientRect();
+        
+        if(target === document.body) {
+             el.style.left = '50%'; el.style.top = '50%';
+        } else {
+             el.style.left = (rect.left + rect.width/2 + xOff) + 'px';
+             el.style.top = (rect.top + yOff) + 'px';
+        }
+        
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 1000);
+    }
+
+    renderFarm();
+    renderPools();
+</script>
 </body>
 </html>
